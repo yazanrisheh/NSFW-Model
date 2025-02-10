@@ -1,25 +1,25 @@
 # Use an official Python runtime as a parent image
 FROM python:3.11-slim
 
-
-
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the requirements file into the container
-# If you don't have one, you can create a file with the necessary dependencies.
 COPY requirements.txt .
 
-# Upgrade pip and install any needed packages specified in requirements.txt
-RUN uv pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Install the UV package manager using pip without caching
+RUN pip install --no-cache-dir uv
+
+# Create a virtual environment using UV and install dependencies without caching
+RUN uv venv VE_model --python 3.11 && \
+    . VE_model/bin/activate && \
+    uv pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your application code to the container
 COPY . .
 
-# Expose the port that Streamlit listens on (default is 8501)
-EXPOSE 8501
+# Streamlit listens on port 8502
+EXPOSE 8502
 
-# Command to run the Streamlit app.
-# The "--server.fileWatcherType none" disables the file watcher to avoid torch warnings.
-CMD ["streamlit", "run", "test.py", "--server.fileWatcherType", "none", "--server.address", "0.0.0.0"]
+# Activate the virtual environment and run the Streamlit app on port 8502
+CMD ["/bin/bash", "-c", ". VE_model/bin/activate && streamlit run main.py --server.fileWatcherType none --server.address 0.0.0.0 --server.port 8502"]

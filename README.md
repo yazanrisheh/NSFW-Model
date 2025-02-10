@@ -1,6 +1,6 @@
 # NSFW Image Detection App
 
-A production-ready NSFW Image Detection application built with [Streamlit](https://streamlit.io/), [HuggingFace Transformers](https://huggingface.co/transformers/), and [PyTorch](https://pytorch.org/). This application allows users to either upload their own images or select from a built-in collection to detect NSFW content.
+A production-ready NSFW Image Detection application built with [Streamlit](https://streamlit.io/), [Falconsai NSFW Model](https://huggingface.co/Falconsai/nsfw_image_detection), and [PyTorch](https://pytorch.org/). This application allows users to either upload their own images or select from a built-in collection to detect NSFW content.
 
 ## Features
 
@@ -22,7 +22,25 @@ A production-ready NSFW Image Detection application built with [Streamlit](https
 1. **Clone the Repository:**
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/yazanrisheh/NSFW-Model.git
+   cd https://github.com/yazanrisheh/NSFW-Model.git
 
-2. 
+2. **Set up Virtual Environment using UV (python version is optional)**
+   ```bash
+   uv venv venv --python 3.11.5
+   ```
+
+   ```bash
+   # On Linux/macOS:
+    source venv/bin/activate
+    # On Windows:
+    venv\Scripts\activate
+    ```
+
+    ```bash
+     uv pip install -r requirements.txt
+     ```
+
+3. **Running the Application (Due to a known issue with Torch's file watcher, start the Streamlit app with the file watcher disabled)**
+   ```bash
+   streamlit run test.py --server.fileWatcherType none
