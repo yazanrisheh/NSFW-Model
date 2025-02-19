@@ -26,19 +26,22 @@ model, processor, device = load_model_and_processor()
 def run_inference(image: Image.Image):
     """
     Preprocess the image, run the model, and calculate probabilities.
-    Returns:
-        - logits: raw model outputs.
-        - probabilities: softmaxed outputs.
-        - predicted_label: the label with highest confidence.
     """
+    # Ensure image is in RGB mode
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+    
     inputs = processor(images=image, return_tensors="pt").to(device)
     with torch.no_grad():
         outputs = model(**inputs)
+    
     logits = outputs.logits
     probabilities = F.softmax(logits, dim=-1)
     predicted_idx = logits.argmax(-1).item()
     predicted_label = model.config.id2label[predicted_idx]
+
     return logits, probabilities, predicted_label
+
 
 def main():
     # Custom CSS for a modern, appealing design
@@ -88,7 +91,7 @@ def main():
     st.markdown("<div class='header'><h1>NSFW Image Detection</h1></div>", unsafe_allow_html=True)
     
    
-    st.sidebar.header("Image Source")
+    st.sidebar.image("falcon_logo.jpeg", use_container_width=False, width=200, caption= "[https://huggingface.co/Falconsai/nsfw_image_detection](https://huggingface.co/Falconsai/nsfw_image_detection)")
     
     source_option = st.sidebar.radio("Choose how to provide an image", ("Upload Image", "Built-in Pictures"))
     
