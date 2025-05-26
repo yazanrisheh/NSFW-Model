@@ -41,6 +41,7 @@ A production-ready NSFW Image Detection application built with [Streamlit](https
      uv pip install -r requirements.txt
      ```
 
-3. **Running the Application (Due to a known issue with Torch's file watcher, start the Streamlit app with the file watcher disabled)**
+3. **Running the Application**
    ```bash
-   streamlit run test.py --server.fileWatcherType none
+   streamlit run main.py
+   ```
